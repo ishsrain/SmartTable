@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity
         if(mSelectMode) {
           // 완료
           // mIntent = new Intent(this, ...);
-          mIntent.putExtra("select", mSelect);
+//          mIntent.putExtra("select", mSelect);
         } else {
           // 선택
           mTextView.setText("음절 선택");
