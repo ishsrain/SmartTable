@@ -7,10 +7,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
-import android.view.MotionEvent;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.Toast;
 
 public class TableImageView extends AppCompatImageView {
 
@@ -18,20 +15,27 @@ public class TableImageView extends AppCompatImageView {
   int mSelectImage = 0;
   boolean mSelect = false;
 
-  SelectViewListner mCallback;
+  String mStr;
+  char mCh1;
+  char mCh2;
+  char mCh3;
+
+  SelectViewListener mCallback;
 
   public TableImageView(Context context) {
     super(context);
 
-    mCallback = (SelectViewListner) context;
+    mCallback = (SelectViewListener) context;
 
     setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View view) {
         if(!mSelect) {
           selectImage();
+          mCallback.selectView((TableImageView)view);
         } else {
           cancelImage();
+          mCallback.selectView((TableImageView)view);
         }
       }
     });
@@ -50,7 +54,6 @@ public class TableImageView extends AppCompatImageView {
   void selectImage(){
     setImage(mSelectImage);
     mSelect = true;
-    mCallback.selectView(this);
   }
 
   void cancelImage(){
@@ -62,8 +65,26 @@ public class TableImageView extends AppCompatImageView {
     mImage = resource;
   }
 
+  int getNormalImageID(){
+    return mImage;
+  }
+
   void setSelectImageID(int resource){
     mSelectImage = resource;
+  }
+
+  int getSelectImageID(){
+    return mSelectImage;
+  }
+
+  void setString(String text) {
+    mStr = text;
+  }
+
+  void setChar(char cho, char jung, char jong) {
+    mCh1 = cho;
+    mCh2 = cho;
+    mCh3 = cho;
   }
 
   void setImage(int resource) {
@@ -71,7 +92,7 @@ public class TableImageView extends AppCompatImageView {
 //    setImageResource(resource);
 
     Bitmap bmp = BitmapFactory.decodeResource(getResources(), resource);
-    Bitmap resizeBitmap = Bitmap.createScaledBitmap(bmp, 100, 100, true);
+    Bitmap resizeBitmap = Bitmap.createScaledBitmap(bmp, bmp.getWidth()/4, bmp.getHeight()/4, true);
 //    bmp.recycle();
 //    BitmapDrawable bitmapDrawable = (BitmapDrawable) getDrawable();
 //    if(bitmapDrawable != null) {
@@ -83,7 +104,7 @@ public class TableImageView extends AppCompatImageView {
     setImageBitmap(resizeBitmap);
   }
 
-  public interface SelectViewListner {
+  public interface SelectViewListener {
     void selectView(TableImageView view);
   }
 }
